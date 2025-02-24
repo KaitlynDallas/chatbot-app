@@ -4,6 +4,7 @@ const Chatbot = () => {
   const [question, setQuestion] = useState("");
   const [chat, setChat] = useState([]);
   const [lastQuestion, setLastQuestion] = useState("");
+  const [lastResponse, setLastResponse] = useState(""); // New state for last bot response
 
   const sendQuestion = async () => {
     if (!question.trim()) return;
@@ -34,7 +35,9 @@ const Chatbot = () => {
       const reader = new FileReader();
 
       reader.onload = function () {
-        setChat([...updatedChat, { type: "bot", text: reader.result }]);
+        const responseText = reader.result;
+        setChat([...updatedChat, { type: "bot", text: responseText }]);
+        setLastResponse(responseText); // Update the last response
       };
 
       reader.readAsText(blob);
@@ -44,7 +47,9 @@ const Chatbot = () => {
   };
 
   const exportChat = () => {
-    const chatText = chat.map(msg => `${msg.type === "user" ? "User" : "Bot"}: ${msg.text}`).join("\n");
+    const chatText = chat
+      .map((msg) => `${msg.type === "user" ? "User" : "Bot"}: ${msg.text}`)
+      .join("\n");
     const blob = new Blob([chatText], { type: "text/plain" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -52,9 +57,22 @@ const Chatbot = () => {
     link.click();
   };
 
+  // New function to export the last bot response
+  const exportLastResponse = () => {
+    if (!lastResponse) {
+      console.warn("No last response available to export.");
+      return;
+    }
+    const blob = new Blob([lastResponse], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "last-response.txt";
+    link.click();
+  };
+
   return (
     <div style={{ padding: "20px", maxWidth: "700px", margin: "auto", fontFamily: "Arial, sans-serif" }}>
-      <div style={{ border: "1px solid #ccc", borderRadius: "10px", padding: "15px", height: "65vh", overflowY: "auto" }}>
+      <div style={{ border: "1px solid #ccc", borderRadius: "10px", padding: "15px", height: "60vh", overflowY: "auto" }}>
         {chat.map((msg, index) => (
           <div
             key={index}
@@ -102,7 +120,13 @@ const Chatbot = () => {
         onClick={exportChat}
         style={{ marginTop: "10px", padding: "10px", backgroundColor: "#28a745", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", width: "100%" }}
       >
-        Export Chat
+        Export Full Chat
+      </button>
+      <button
+        onClick={exportLastResponse}
+        style={{ marginTop: "10px", padding: "10px", backgroundColor: "#17a2b8", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", width: "100%" }}
+      >
+        Export Last Response
       </button>
     </div>
   );
