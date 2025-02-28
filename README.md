@@ -57,9 +57,12 @@ Tech Stack:
   
 - cors for enabling frontend-backend communication
   
+<img width="1200" alt="Screenshot 2025-02-28 at 12 28 57 PM" src="https://github.com/user-attachments/assets/d240b2ee-53fc-4738-a25c-bff2577efc93" />
 
 
 https://github.com/user-attachments/assets/5620caa2-07e5-403e-885a-54d6d7030d9f
+
+
 
 
 
