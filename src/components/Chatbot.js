@@ -4,7 +4,7 @@ const Chatbot = () => {
   const [question, setQuestion] = useState("");
   const [chat, setChat] = useState([]);
   const [lastQuestion, setLastQuestion] = useState("");
-  const [lastResponse, setLastResponse] = useState(""); // New state for last bot response
+  const [lastResponse, setLastResponse] = useState("");
 
   const sendQuestion = async () => {
     if (!question.trim()) return;
@@ -12,7 +12,7 @@ const Chatbot = () => {
     setChat(newChat);
     setLastQuestion(question);
     setQuestion("");
-    
+
     const blob = new Blob([question], { type: "text/plain" });
     const formData = new FormData();
     formData.append("file", blob, "question.txt");
@@ -37,7 +37,7 @@ const Chatbot = () => {
       reader.onload = function () {
         const responseText = reader.result;
         setChat([...updatedChat, { type: "bot", text: responseText }]);
-        setLastResponse(responseText); // Update the last response
+        setLastResponse(responseText);
       };
 
       reader.readAsText(blob);
@@ -57,7 +57,6 @@ const Chatbot = () => {
     link.click();
   };
 
-  // New function to export the last bot response
   const exportLastResponse = () => {
     if (!lastResponse) {
       console.warn("No last response available to export.");
@@ -71,8 +70,20 @@ const Chatbot = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "700px", margin: "auto", fontFamily: "Arial, sans-serif" }}>
-      <div style={{ border: "1px solid #ccc", borderRadius: "10px", padding: "15px", height: "60vh", overflowY: "auto" }}>
+    <div style={{ 
+      padding: "20px", 
+      width: "90%", 
+      maxWidth: "700px", 
+      margin: "auto", 
+      fontFamily: "Arial, sans-serif" 
+    }}>
+      <div style={{ 
+        border: "1px solid #ccc", 
+        borderRadius: "10px", 
+        padding: "15px", 
+        height: "60vh", 
+        overflowY: "auto" 
+      }}>
         {chat.map((msg, index) => (
           <div
             key={index}
@@ -96,35 +107,86 @@ const Chatbot = () => {
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", marginTop: "15px" }}>
+
+      <div style={{ display: "flex", marginTop: "15px", width: "100%" }}>
         <textarea
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Type your query..."
-          style={{ flex: 1, padding: "10px", borderRadius: "20px", border: "1px solid #ccc", resize: "none", minHeight: "40px" }}
+          style={{ 
+            flex: 1, 
+            padding: "10px", 
+            borderRadius: "20px", 
+            border: "1px solid #ccc", 
+            resize: "none", 
+            minHeight: "40px",
+            fontSize: "clamp(12px, 1.5vw, 16px)"
+          }}
         />
         <button
           onClick={sendQuestion}
-          style={{ marginLeft: "10px", padding: "10px 15px", backgroundColor: "#007bff", color: "white", border: "none", borderRadius: "20px", cursor: "pointer" }}
+          style={{ 
+            marginLeft: "10px", 
+            padding: "10px 15px", 
+            backgroundColor: "#007bff", 
+            color: "white", 
+            border: "none", 
+            borderRadius: "20px", 
+            cursor: "pointer",
+            fontSize: "clamp(12px, 1.5vw, 16px)" 
+          }}
         >
           Send
         </button>
       </div>
+
       <button
         onClick={() => setQuestion(lastQuestion)}
-        style={{ marginTop: "10px", padding: "10px", backgroundColor: "#ffc107", color: "black", border: "none", borderRadius: "5px", cursor: "pointer", width: "100%" }}
+        style={{ 
+          marginTop: "10px", 
+          padding: "10px", 
+          backgroundColor: "#ffc107", 
+          color: "black", 
+          border: "none", 
+          borderRadius: "5px", 
+          cursor: "pointer", 
+          width: "100%",
+          fontSize: "clamp(12px, 1.5vw, 16px)"
+        }}
       >
         Edit Search
       </button>
+
       <button
         onClick={exportChat}
-        style={{ marginTop: "10px", padding: "10px", backgroundColor: "#28a745", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", width: "100%" }}
+        style={{ 
+          marginTop: "10px", 
+          padding: "10px", 
+          backgroundColor: "#28a745", 
+          color: "white", 
+          border: "none", 
+          borderRadius: "5px", 
+          cursor: "pointer", 
+          width: "100%",
+          fontSize: "clamp(12px, 1.5vw, 16px)"
+        }}
       >
         Export Full Chat
       </button>
+
       <button
         onClick={exportLastResponse}
-        style={{ marginTop: "10px", padding: "10px", backgroundColor: "#17a2b8", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", width: "100%" }}
+        style={{ 
+          marginTop: "10px", 
+          padding: "10px", 
+          backgroundColor: "#17a2b8", 
+          color: "white", 
+          border: "none", 
+          borderRadius: "5px", 
+          cursor: "pointer", 
+          width: "100%",
+          fontSize: "clamp(12px, 1.5vw, 16px)"
+        }}
       >
         Export Last Response
       </button>
